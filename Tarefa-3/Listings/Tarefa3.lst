@@ -1,0 +1,143 @@
+A51 MACRO ASSEMBLER  TAREFA3                                                              07/22/2023 15:28:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Tarefa3.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE Tarefa3.asm SET(SMALL) DEBUG PRINT(.\Listings\Tarefa3.lst
+                      ) OBJECT(.\Objects\Tarefa3.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; Arquivo assembly de um contador externo de 8 bits (c/ recarga autom?tica) com duas entrad
+                             as de contagem.
+                       2     ; Entrada 0 no pino T0 (P3.4) e contagem no T/C 0.
+                       3     ; Entrada 1 no pino T1 (P3.5) e contagem no T/C 1.
+                       4     ; O pino P1.0 suspende / retoma a contagem.
+                       5     
+                       6                                     $mod51 
+                       7                                     
+  0080                 8                                     VD                      equ P0.0        ; Verde - veiculos
+  0081                 9                                     AM                      equ P0.1        ; Amarelo - veiculos
+  0082                10                                     VM                      equ P0.2        ; Vermelho - veicul
+                             os
+  0083                11                                     VD1                     equ P0.3        ; Verde - pedestres
+  0084                12                                     VM1                     equ P0.4        ; Vermelho - pedest
+                             res
+  0090                13                                     COUNTER0        equ     P1
+  00A0                14                                     COUNTER1        equ     P2
+  00B2                15                                     BUTTON          equ     P3.2
+  002C                16                                     FLAG            equ 002Ch
+                      17     
+0000                  18                                     org 0000h       ; RESET 
+0000 020026           19                                             ljmp INIT                       ; Pula para o in?ci
+                             o do programa.
+                      20     
+0003                  21                                     org 0003h       ; /INT0
+0003 020042           22                                             ljmp ISR_EX0
+                      23                                             
+000B                  24                                     org 000Bh       ; TIMER0
+000B 02004B           25                                             ljmp ISR_TIMER0
+                      26     
+0013                  27                                     org 0013h       ; /INT1
+0013 02005C           28                                             ljmp ISR_EX1
+                      29                                             
+001B                  30                                     org 001Bh       ; TIMER1
+001B 02005D           31                                             ljmp ISR_TIMER1
+                      32                                             
+0023                  33                                     org 0023h       ; SERIAL
+0023 02005E           34                                             ljmp ISR_SERIAL
+                      35     
+0026 75A883           36     INIT:                   mov IE, #83h            ; Habilita a interrupção do Timer 0. 1000$0
+                             011b
+0029 758901           37                                     mov TMOD, #01h          ; Configura o Timer 0 em Modo 1. 00
+                             00$0001b
+002C 758C3C           38                                     mov TH0, #3Ch           ; Move o byte superior para gerar 5
+                             0k contagens (50 ms). 0111$1100b
+002F 758AAF           39                                     mov TL0, #0AFh          ; Move o byte inferior. 1010$1111b
+                      40                                     
+0032 D280             41                                     setb VD
+0034 D281             42                                     setb AM
+0036 D282             43                                     setb VM
+0038 D283             44                                     setb VD1
+003A D284             45                                     setb VM1
+                      46                                     
+003C                  47     LOOP:                   
+003C C280             48                                     clr VD                          ;Deixa o verde ligado
+003E 7820             49                                     mov R0, #800            ;Faz R0 = 800 para repetir 800x a r
+                             otina de 1000 ms. preparado para a interrupção
+A51 MACRO ASSEMBLER  TAREFA3                                                              07/22/2023 15:28:00 PAGE     2
+
+*** __________________________________________________________________^
+*** WARNING #A52 IN 49 (Tarefa3.asm, LINE 49): VALUE HAS BEEN TRUNCATED TO 8 BITS
+0040 80FA             50                                     sjmp LOOP                               ; Retorna ao la?o principal.
+                      51                                     
+                      52                             ; Retorna ao la?o principal.
+                      53     
+0042 D28C             54     ISR_EX0:                setb TR0                        ; Liga o Timer 0 e a contagem começa.
+0044 C28D             55                                     clr TF0
+0046 D280             56                                     setb VD
+0048 C281             57                                     clr AM
+004A 32               58                                     reti                                    ; Retorna da interrup??o.
+                      59                             
+004B                  60     ISR_TIMER0:             
+004B C28D             61                                     clr TF0                         ; Limpa a flag que gerou a interrupção.
+004D 758C3C           62                                     mov TH0, #3Ch           ; Recarrega os bytes superior e inferior.
+0050 758AAF           63                                     mov TL0, #0AFh          ; Move o byte inferior.
+0053 D806             64                                     djnz R0, return         ; Retorna da interrupção neste ponto se R0 > 0.
+0055 D280             65                                     setb VD                         ; Desliga o Verde Carro
+0057 C281             66                                     clr AM                          ; Liga o Amarelo Carro
+0059 7820             67                                     mov R0, #800            ; Recarrega o R0.
+*** __________________________________________________________________^
+*** WARNING #A52 IN 67 (Tarefa3.asm, LINE 67): VALUE HAS BEEN TRUNCATED TO 8 BITS
+005B 32               68     return:                 reti                            ; Retorna da interrupção.
+                      69                             
+005C 32               70     ISR_EX1:                reti                                    ; Retorna da interrup??o.
+                      71     
+005D 32               72     ISR_TIMER1:             reti                                    ; Retorna da interrup??o.
+                      73                             
+005E 32               74     ISR_SERIAL:             reti                                    ; Retorna da interrup??o.
+                      75                
+                      76     end
+                                     
+                                     
+A51 MACRO ASSEMBLER  TAREFA3                                                              07/22/2023 15:28:00 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AM . . . . . . . .  B ADDR   0080H.1 A   
+BUTTON . . . . . .  B ADDR   00B0H.2 A   
+COUNTER0 . . . . .  D ADDR   0090H   A   
+COUNTER1 . . . . .  D ADDR   00A0H   A   
+FLAG . . . . . . .  N NUMB   002CH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INIT . . . . . . .  C ADDR   0026H   A   
+ISR_EX0. . . . . .  C ADDR   0042H   A   
+ISR_EX1. . . . . .  C ADDR   005CH   A   
+ISR_SERIAL . . . .  C ADDR   005EH   A   
+ISR_TIMER0 . . . .  C ADDR   004BH   A   
+ISR_TIMER1 . . . .  C ADDR   005DH   A   
+LOOP . . . . . . .  C ADDR   003CH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RETURN . . . . . .  C ADDR   005BH   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+VD . . . . . . . .  B ADDR   0080H.0 A   
+VD1. . . . . . . .  B ADDR   0080H.3 A   
+VM . . . . . . . .  B ADDR   0080H.2 A   
+VM1. . . . . . . .  B ADDR   0080H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  2 WARNING(S), 0 ERROR(S)

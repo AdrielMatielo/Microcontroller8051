@@ -1,0 +1,94 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    07/12/2023  15:53:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\PROGRAM FILES\KEIL_V5\C51\BIN\BL51.EXE .\Objects\T1-E2-Acender_leds_em_serie_r00.obj TO .\Objects\T1-E1-Contador_disp
+>> lay_7segmentos_pt-r00 PRINT (.\Listings\T1-E1-Contador_display_7segmentos_pt-r00.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\T1-E2-Acender_leds_em_serie_r00.obj (T1_E2_ACENDER_LEDS_EM_SERIE_R00)
+
+
+LINK MAP OF MODULE:  .\Objects\T1-E1-Contador_display_7segmentos_pt-r00 (T1_E2_ACENDER_LEDS_EM_SERIE_R00)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     006CH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\T1-E1-Contador_display_7segmentos_pt-r00 (T1_E2_ACENDER_LEDS_EM_SERIE_R00)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        T1_E2_ACENDER_LEDS_EM_SERIE_R00
+  C:005AH         SYMBOL        DELAY
+  C:0026H         SYMBOL        INIT
+  C:0067H         SYMBOL        ISR_EX0
+  C:0069H         SYMBOL        ISR_EX1
+  C:006BH         SYMBOL        ISR_SERIAL
+  C:0068H         SYMBOL        ISR_TIMER0
+  C:006AH         SYMBOL        ISR_TIMER1
+  C:0026H         SYMBOL        LOOP
+  C:005CH         SYMBOL        LOOP1
+  C:005EH         SYMBOL        LOOP2
+  C:0060H         SYMBOL        LOOP3
+  D:0080H         SYMBOL        P0
+  C:0000H         LINE#         19
+  C:0003H         LINE#         22
+  C:000BH         LINE#         25
+  C:0013H         LINE#         28
+  C:001BH         LINE#         31
+  C:0023H         LINE#         34
+  C:0026H         LINE#         40
+  C:0029H         LINE#         41
+  C:002BH         LINE#         42
+  C:002EH         LINE#         43
+  C:0030H         LINE#         44
+  C:0033H         LINE#         45
+  C:0035H         LINE#         46
+  C:0038H         LINE#         47
+  C:003AH         LINE#         48
+  C:003DH         LINE#         49
+  C:003FH         LINE#         50
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/12/2023  15:53:24  PAGE 2
+
+
+  C:0042H         LINE#         51
+  C:0044H         LINE#         52
+  C:0047H         LINE#         53
+  C:0049H         LINE#         54
+  C:004CH         LINE#         55
+  C:004EH         LINE#         56
+  C:0051H         LINE#         57
+  C:0053H         LINE#         58
+  C:0056H         LINE#         59
+  C:0058H         LINE#         61
+  C:005AH         LINE#         63
+  C:005CH         LINE#         64
+  C:005EH         LINE#         65
+  C:0060H         LINE#         66
+  C:0062H         LINE#         67
+  C:0064H         LINE#         68
+  C:0066H         LINE#         69
+  C:0067H         LINE#         71
+  C:0068H         LINE#         73
+  C:0069H         LINE#         75
+  C:006AH         LINE#         77
+  C:006BH         LINE#         79
+  -------         ENDMOD        T1_E2_ACENDER_LEDS_EM_SERIE_R00
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0058H BYTE ( 4%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=108
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

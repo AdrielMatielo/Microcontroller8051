@@ -1,0 +1,3 @@
+".\Objects\Tarefa3-R02.obj" 
+TO ".\Objects\Tarefa3_Tempporizacao" 
+PRINT(".\Listings\Tarefa3_Tempporizacao.m51") RAMSIZE(256) 

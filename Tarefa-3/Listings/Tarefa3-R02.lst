@@ -1,0 +1,210 @@
+A51 MACRO ASSEMBLER  TAREFA3_R02                                                          07/22/2023 22:34:12 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Tarefa3-R02.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE Tarefa3-R02.asm SET(SMALL) DEBUG PRINT(.\Listings\Tarefa3
+                      -R02.lst) OBJECT(.\Objects\Tarefa3-R02.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; ======================================= Universidade Federal de Pelotas
+                       2     ; ======================================= Centro de Desenvolvimento Tecnológico
+                       3     ; ======================================= Bacharelado em Engenharia de Computação
+                       4     ; ======================================= Disciplina: 22000279 --- Microcontroladores
+                       5     ; ======================================= Turma: 2023/1 --- M1
+                       6     ; ======================================= Professor: Alan Rossetto
+                       7     ;
+                       8     ;                                                                                 Descripti
+                             on: AT80C51RD2 - 12MHz
+                       9     ;                                                                                 Traffic l
+                             ight with wait time using timers
+                      10     ;                                                                                 Lights ac
+                             tivate in low state
+                      11     ;
+                      12     ;                                                                                 Identific
+                             ação:
+                      13     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula: Adriel Correa Matielo 16105321
+                      14     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula:
+                      15     ;                                                                                 Data: 22/
+                             07/2023
+                      16     
+                      17                                     $mod51 
+                      18                                     
+  0082                19                                     RED             equ P0.2        ; Red Light - car
+  0081                20                                     YELLOW          equ P0.1        ; Yellow Light - car
+  0080                21                                     GREEN           equ P0.0        ; Green Light - car
+                      22                                             
+  0084                23                                     RED_P           equ P0.4        ; Red Light - pedestrian
+  0083                24                                     GREEN_P         equ P0.3        ; Green Light - pedestrian
+                      25                                             
+  00B2                26                                     BUTTON          equ     P3.2    ; Semaphore Button
+                      27                                             
+  002C                28                                     FLAG            equ 002Ch       ; Return of interruptions
+                      29     
+0000                  30                                     org 0000h       ; RESET 
+0000 020026           31                                             ljmp INIT
+0003                  32                                     org 0003h       ; /INT0
+0003 020073           33                                             ljmp ISR_EX0
+000B                  34                                     org 000Bh       ; TIMER0
+000B 02007C           35                                             ljmp ISR_TIMER0
+0013                  36                                     org 0013h       ; /INT1
+0013 02008E           37                                             ljmp ISR_EX1
+001B                  38                                     org 001Bh       ; TIMER1
+001B 020085           39                                             ljmp ISR_TIMER1
+0023                  40                                     org 0023h       ; SERIAL
+0023 02008F           41                                             ljmp ISR_SERIAL
+                      42     
+0026 75A88B           43     INIT:                   mov IE, #1000$1011b                             ; Interruption Regi
+                             ster: (1)Enable-(X)-(X)-(0)E/S-$-(1)Timer1-(0)Ex1-(1)Timer0-(1)Ex0
+0029 758911           44                                     mov TMOD, #0001$0001b                           ; Timer/Cou
+                             nter Register: T1 (0)TR1-(0)Timer-(01)Mode01 -$- T2 (0)TR2-(0)Timer-(01)Mode01
+                      45                                     
+002C 7828             46                                     mov R0, #40                                                
+                                  ; TR0 repeats 40x 50ms  (@12MHZ) = 2 seconds
+002E 758C4C           47                                     mov TH0, #4Ch                                           ; 3
+A51 MACRO ASSEMBLER  TAREFA3_R02                                                          07/22/2023 22:34:12 PAGE     2
+
+                             C is the high part of (FFFF - 50ms/1us)  
+0031 758AAF           48                                     mov TL0, #0AFh                                          ; A
+                             F is the low part of (FFFF - 50ms/1us)
+0034 79C8             49                                     mov R1, #200                                            ; T
+                             R1 repeats 200x 50ms  (@12MHZ) = 10 seconds
+0036 758D4C           50                                     mov TH1, #4Ch                                           ; 3
+                             C is the high part of (FFFF - 50ms/1us)
+0039 758BAF           51                                     mov TL1, #0AFh                                          ; A
+                             F is the low part of (FFFF - 50ms/1us)
+                      52     
+                      53     ;;;;;;;;;;;;;;;;;;;TRAFFIC LIGHT;;;;;;;;;;;;;;;;;;;
+                      54                                     
+003C                  55     GREEN_STATE:
+003C D22C             56                                     setb FLAG
+                      57                             
+003E D282             58                                     setb RED
+0040 D281             59                                     setb YELLOW 
+0042 C280             60                                     clr GREEN
+0044 C284             61                                     clr RED_P
+0046 D283             62                                     setb GREEN_P
+0048                  63     GREEN_WAIT:
+0048 302C02           64                                     jnb FLAG, YELLOW_STATE                          ; When EX0 
+                             interrupts, Flag gets 0 then jump to YELLOW_STATE.
+004B 80FB             65                                     sjmp GREEN_WAIT                                         ; E
+                             lse return to GREEN_WAIT
+                      66                                     
+004D                  67     YELLOW_STATE:
+004D D282             68                                     setb RED
+004F C281             69                                     clr YELLOW 
+0051 D280             70                                     setb GREEN
+0053 C284             71                                     clr RED_P
+0055 D283             72                                     setb GREEN_P
+                      73                                     
+0057 D22C             74                                     setb FLAG
+0059 D28C             75                                     setb TR0                                                   
+                                  ; Start Timer0
+005B                  76     YELLOW_WAIT:
+005B 302C02           77                                     jnb FLAG, RED_STATE                             ; When TF0 
+                             interrupts R0 times, Flag gets 0 then jump to RED_STATE.
+005E 80FB             78                                     jmp YELLOW_WAIT                                         ; E
+                             lse return to YELLOW_WAIT
+0060                  79     RED_STATE:      
+0060 C282             80                                     clr RED
+0062 D281             81                                     setb YELLOW 
+0064 D280             82                                     setb GREEN
+0066 D284             83                                     setb RED_P
+0068 C283             84                                     clr GREEN_P
+                      85                                     
+006A D22C             86                                     setb FLAG
+006C D28E             87                                     setb TR1                                                   
+                                  ; Start Timer1
+006E                  88     RED_WAIT:                                                                                  
+                                  
+006E 302CB5           89                                     jnb FLAG, INIT                                          ; W
+                             hen TF1 interrupts R1 times, Flag gets 0 then jump to  INIT
+0071 80FB             90                                     jmp RED_WAIT                                            ; E
+                             lse return to RED_WAIT
+                      91     
+                      92                                     
+                      93     ;;;;;;;;;;;;;;;;;;;INTERRUPTIONS;;;;;;;;;;;;;;;;;;;
+                      94     
+0073                  95     ISR_EX0:                
+0073 30B2FD           96                                     jnb BUTTON, $                                           ; W
+                             ait until release button.
+0076 75A88A           97                                     mov IE, #10001010b                              ; Disable E
+                             X0.
+A51 MACRO ASSEMBLER  TAREFA3_R02                                                          07/22/2023 22:34:12 PAGE     3
+
+0079 C22C             98                                     clr FLAG                                                   
+                                  ; Turns on Flag
+007B 32               99                                     reti
+                     100                             
+007C                 101     ISR_TIMER0:             
+007C C28D            102                                     clr TF0                                                    
+                                  ; Clear interruption
+007E D804            103                                     djnz R0, ENDTIMER0                                      ; I
+                             f TF0 interrupts R0 times, Flag gets 0 and stop TR0
+0080 C22C            104                                     clr FLAG
+0082 C28C            105                                     clr TR0
+0084 32              106     ENDTIMER0:              reti
+                     107                                     
+0085                 108     ISR_TIMER1:             
+0085 C28F            109                                     clr TF1                                                    
+                                  ; Clear interruption
+0087 D904            110                                     djnz R1, ENDTIMER1                                      ; I
+                             f TF1 interrupts R1 times, Flag gets 0 and stop TR1
+0089 C22C            111                                     clr FLAG
+008B C28E            112                                     clr TR1
+008D 32              113     ENDTIMER1:              reti
+                     114     
+008E 32              115     ISR_EX1:                reti                                                            ;
+008F 32              116     ISR_SERIAL:             reti                                                            ;
+                     117                
+                     118     end
+A51 MACRO ASSEMBLER  TAREFA3_R02                                                          07/22/2023 22:34:12 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BUTTON . . . . . .  B ADDR   00B0H.2 A   
+ENDTIMER0. . . . .  C ADDR   0084H   A   
+ENDTIMER1. . . . .  C ADDR   008DH   A   
+FLAG . . . . . . .  N NUMB   002CH   A   
+GREEN. . . . . . .  B ADDR   0080H.0 A   
+GREEN_P. . . . . .  B ADDR   0080H.3 A   
+GREEN_STATE. . . .  C ADDR   003CH   A   
+GREEN_WAIT . . . .  C ADDR   0048H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INIT . . . . . . .  C ADDR   0026H   A   
+ISR_EX0. . . . . .  C ADDR   0073H   A   
+ISR_EX1. . . . . .  C ADDR   008EH   A   
+ISR_SERIAL . . . .  C ADDR   008FH   A   
+ISR_TIMER0 . . . .  C ADDR   007CH   A   
+ISR_TIMER1 . . . .  C ADDR   0085H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RED. . . . . . . .  B ADDR   0080H.2 A   
+RED_P. . . . . . .  B ADDR   0080H.4 A   
+RED_STATE. . . . .  C ADDR   0060H   A   
+RED_WAIT . . . . .  C ADDR   006EH   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TF1. . . . . . . .  B ADDR   0088H.7 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+YELLOW . . . . . .  B ADDR   0080H.1 A   
+YELLOW_STATE . . .  C ADDR   004DH   A   
+YELLOW_WAIT. . . .  C ADDR   005BH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

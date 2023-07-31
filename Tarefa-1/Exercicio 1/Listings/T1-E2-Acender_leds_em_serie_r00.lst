@@ -1,0 +1,130 @@
+A51 MACRO ASSEMBLER  T1_E2_ACENDER_LEDS_EM_SERIE_R00                                      07/12/2023 15:53:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\T1-E2-Acender_leds_em_serie_r00.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE T1-E2-Acender_leds_em_serie_r00.asm SET(SMALL) DEBUG PRIN
+                      T(.\Listings\T1-E2-Acender_leds_em_serie_r00.lst) OBJECT(.\Objects\T1-E2-Acender_leds_em_serie_r00.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; ======================================= Universidade Federal de Pelotas
+                       2     ; ======================================= Centro de Desenvolvimento Tecnológico
+                       3     ; ======================================= Bacharelado em Engenharia de Computação
+                       4     ; ======================================= Disciplina: 22000279 --- Microcontroladores
+                       5     ; ======================================= Turma: 2023/1 --- M1
+                       6     ; ======================================= Professor: Alan Rossetto
+                       7     ;
+                       8     ;                                                                                 Descriç�
+                             �o: AT80C51RD2 - 12MHz - Faz a contagem em um display de 7 segmentos 
+                       9     ;                                                                                 Arquivo b
+                             ase para desenvolvimento da Tarefa 1.
+                      10     ;
+                      11     ;                                                                                 Identific
+                             ação:
+                      12     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula: Adriel Correa Matielo
+                      13     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula:
+                      14     ;                                                                                 Data: 06/
+                             07/2023
+                      15     
+                      16                                     $mod51 
+                      17     
+0000                  18                                     org 0000h       ; RESET 
+0000 020026           19                                             ljmp INIT                       ; Pula para o iníc
+                             io do programa.
+                      20     
+0003                  21                                     org 0003h       ; /INT0
+0003 020067           22                                             ljmp ISR_EX0
+                      23                                             
+000B                  24                                     org 000Bh       ; TIMER0
+000B 020068           25                                             ljmp ISR_TIMER0
+                      26     
+0013                  27                                     org 0013h       ; /INT1
+0013 020069           28                                             ljmp ISR_EX1
+                      29                                             
+001B                  30                                     org 001Bh       ; TIMER1
+001B 02006A           31                                             ljmp ISR_TIMER1
+                      32                                             
+0023                  33                                     org 0023h       ; SERIAL
+0023 02006B           34                                             ljmp ISR_SERIAL
+                      35     
+0026                  36     INIT:                                                                   ; Subrotina para ev
+                             entuais inicializações (não necessária na Tarefa 1).
+                      37                                             
+0026                  38     LOOP:                                                                   ; Início do laço 
+                             principal e do trecho editável do programa.
+                      39                                     ;                abcdefgp
+0026 758003           40                                     mov P0, #00000011b      ;0
+0029 115A             41                                     call DELAY
+002B 75809F           42                                     mov P0, #10011111b      ;1
+002E 115A             43                                     call DELAY
+0030 758025           44                                     mov P0, #00100101b      ;2
+0033 115A             45                                     call DELAY
+0035 75800D           46                                     mov P0, #00001101b      ;3
+0038 115A             47                                     call DELAY
+003A 758099           48                                     mov P0, #10011001b      ;4
+A51 MACRO ASSEMBLER  T1_E2_ACENDER_LEDS_EM_SERIE_R00                                      07/12/2023 15:53:23 PAGE     2
+
+003D 115A             49                                     call DELAY
+003F 758049           50                                     mov P0, #01001001b      ;5
+0042 115A             51                                     call DELAY
+0044 758041           52                                     mov P0, #01000001b      ;6
+0047 115A             53                                     call DELAY
+0049 75801F           54                                     mov P0, #00011111b      ;7
+004C 115A             55                                     call DELAY
+004E 758001           56                                     mov P0, #00000001b      ;8
+0051 115A             57                                     call DELAY
+0053 758009           58                                     mov P0, #00001001b      ;9
+0056 115A             59                                     call DELAY
+                      60     
+0058 80CC             61                                     sjmp LOOP                               ; Fim do laço prin
+                             cipal e término do trecho editável do programa.
+                      62     
+005A 7A02             63     DELAY:                  mov R2, #002                    ; Rotina de atraso de A x 100 ms (c
+                             om A = 2).
+005C 79FF             64     LOOP1:                  mov R1, #255
+005E 78FF             65     LOOP2:                  mov R0, #255
+0060 D8FE             66     LOOP3:                  djnz R0, LOOP3
+0062 D9FA             67                                     djnz R1, LOOP2
+0064 DAF6             68                                     djnz R2, LOOP1
+0066 22               69                                     ret
+                      70     
+0067 32               71     ISR_EX0:                reti                                    ; Retorna da interrupção.
+                      72                             
+0068 32               73     ISR_TIMER0:             reti                                    ; Retorna da interrupção.
+                      74                             
+0069 32               75     ISR_EX1:                reti                                    ; Retorna da interrupção.
+                      76     
+006A 32               77     ISR_TIMER1:             reti                                    ; Retorna da interrupção.
+                      78                             
+006B 32               79     ISR_SERIAL:             reti                                    ; Retorna da interrupção.
+                      80                
+                      81     end
+A51 MACRO ASSEMBLER  T1_E2_ACENDER_LEDS_EM_SERIE_R00                                      07/12/2023 15:53:23 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   005AH   A   
+INIT . . . . . . .  C ADDR   0026H   A   
+ISR_EX0. . . . . .  C ADDR   0067H   A   
+ISR_EX1. . . . . .  C ADDR   0069H   A   
+ISR_SERIAL . . . .  C ADDR   006BH   A   
+ISR_TIMER0 . . . .  C ADDR   0068H   A   
+ISR_TIMER1 . . . .  C ADDR   006AH   A   
+LOOP . . . . . . .  C ADDR   0026H   A   
+LOOP1. . . . . . .  C ADDR   005CH   A   
+LOOP2. . . . . . .  C ADDR   005EH   A   
+LOOP3. . . . . . .  C ADDR   0060H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

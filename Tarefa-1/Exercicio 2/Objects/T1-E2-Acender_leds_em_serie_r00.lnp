@@ -1,0 +1,3 @@
+".\Objects\T1-E2-Acender_leds_em_serie_r00.obj" 
+TO ".\Objects\T1-E2-Acender_leds_em_serie_r00" 
+PRINT(".\Listings\T1-E2-Acender_leds_em_serie_r00.m51") RAMSIZE(256) 

@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    07/19/2023  22:56:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\PROGRAM FILES\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Tarefa1_E2.obj TO .\Objects\Tarefa2_Uso_de_interrupcao_externa PRINT
+>>  (.\Listings\Tarefa2_Uso_de_interrupcao_externa.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Tarefa1_E2.obj (TAREFA1_E2)
+
+
+LINK MAP OF MODULE:  .\Objects\Tarefa2_Uso_de_interrupcao_externa (TAREFA1_E2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0063H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Tarefa2_Uso_de_interrupcao_externa (TAREFA1_E2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TAREFA1_E2
+  C:0049H         SYMBOL        DELAY_500MS
+  C:0033H         SYMBOL        DOWN_UP
+  B:00A8H.7       SYMBOL        EA
+  N:0000H         SYMBOL        FLAG
+  B:0090H.0       SYMBOL        GO_DN
+  B:0090H.7       SYMBOL        GO_UP
+  D:00A8H         SYMBOL        IE
+  C:002FH         SYMBOL        INIT
+  C:0056H         SYMBOL        ISR_EX0
+  C:005CH         SYMBOL        ISR_EX1
+  C:0062H         SYMBOL        ISR_SERIAL
+  C:005BH         SYMBOL        ISR_TIMER0
+  C:0061H         SYMBOL        ISR_TIMER1
+  B:0088H.0       SYMBOL        IT0
+  B:0088H.2       SYMBOL        IT1
+  C:004BH         SYMBOL        LOOP1
+  C:004DH         SYMBOL        LOOP2
+  C:004FH         SYMBOL        LOOP3
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  C:003EH         SYMBOL        UP_DOWN
+  C:0000H         LINE#         9
+  C:0003H         LINE#         12
+  C:000BH         LINE#         15
+  C:0013H         LINE#         18
+  C:001BH         LINE#         21
+  C:0023H         LINE#         24
+  C:0026H         LINE#         28
+  C:0029H         LINE#         29
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/19/2023  22:56:26  PAGE 2
+
+
+  C:002BH         LINE#         30
+  C:002DH         LINE#         31
+  C:002FH         LINE#         33
+  C:0031H         LINE#         34
+  C:0033H         LINE#         36
+  C:0036H         LINE#         37
+  C:0037H         LINE#         38
+  C:0039H         LINE#         39
+  C:003CH         LINE#         40
+  C:003EH         LINE#         42
+  C:0041H         LINE#         43
+  C:0042H         LINE#         44
+  C:0044H         LINE#         45
+  C:0047H         LINE#         46
+  C:0049H         LINE#         48
+  C:004BH         LINE#         49
+  C:004DH         LINE#         50
+  C:004FH         LINE#         51
+  C:0051H         LINE#         52
+  C:0053H         LINE#         53
+  C:0055H         LINE#         54
+  C:0056H         LINE#         56
+  C:0058H         LINE#         57
+  C:005AH         LINE#         58
+  C:005BH         LINE#         60
+  C:005CH         LINE#         62
+  C:005EH         LINE#         63
+  C:0060H         LINE#         64
+  C:0061H         LINE#         66
+  C:0062H         LINE#         68
+  -------         ENDMOD        TAREFA1_E2
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 004FH BYTE ( 3%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=99
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,110 @@
+A51 MACRO ASSEMBLER  EXEMPLO_BLINK                                                        07/22/2023 17:41:16 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Exemplo-Blink.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE Exemplo-Blink.asm SET(SMALL) DEBUG PRINT(.\Listings\Exemp
+                      lo-Blink.lst) OBJECT(.\Objects\Exemplo-Blink.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; Código para produzir uma rotina de atraso de 1 s e piscar um LED ligado no pino P1.0.
+                       2     ; Valores utilizados considerando f = 12 MHz.
+                       3     
+                       4     
+                       5                                     $mod51 
+                       6                                             
+  0080                 7                                     LED equ p0.0
+                       8     
+0000                   9                                     org 0000h       ; RESET 
+0000 020026           10                                             ljmp INIT               ; Pula para o início do pro
+                             grama.
+                      11     
+0003                  12                                     org 0003h       ; /INT0
+0003 02003A           13                                             ljmp ISR_EX0
+                      14                                             
+000B                  15                                     org 000Bh       ; TIMER0
+000B 02003B           16                                             ljmp ISR_TIMER0
+                      17     
+0013                  18                                     org 0013h       ; /INT1
+0013 02004A           19                                             ljmp ISR_EX1
+                      20                                             
+001B                  21                                     org 001Bh       ; TIMER1
+001B 02004B           22                                             ljmp ISR_TIMER1
+                      23                                             
+0023                  24                                     org 0023h       ; SERIAL
+0023 02004C           25                                             ljmp ISR_SERIAL
+                      26     
+0026 75A882           27     INIT:                   mov IE, #82h            ; Habilita a interrupção do Timer 0. 1000$0
+                             010b
+0029 758901           28                                     mov TMOD, #01h          ; Configura o Timer 0 em Modo 1. 00
+                             00$0001b
+002C 7814             29                                     mov R0, #20                     ; Faz R0 = 20 para repetir 
+                             20x a rotina de 50 ms.
+002E 758C3C           30                                     mov TH0, #3Ch           ; Move o byte superior para gerar 5
+                             0k contagens (50 ms). 0111$1100b
+0031 758AAF           31                                     mov TL0, #0AFh          ; Move o byte inferior. 1010$1111b
+0034 D28C             32                                     setb TR0                        ; Liga o Timer 0 e a contag
+                             em começa.
+0036 8000             33                                     sjmp LOOP                       ; Pula para o laço principa
+                             l.
+                      34                     
+0038 80FE             35     LOOP:                   sjmp $                          ; Fica travado no loop (while(1)) a
+                             té que ocorra o overflow do Timer 0.
+                      36                                                                             ; Quando isso acont
+                             ece, o programa desvia para a ISR_TIMER0.
+                      37     
+                      38     
+003A 32               39     ISR_EX0:                reti                            ; Retorna da interrupção.
+                      40                             
+003B C28D             41     ISR_TIMER0:             clr TF0                         ; Limpa a flag que gerou a interrup
+                             ção.
+003D 758C3C           42                                     mov TH0, #3Ch           ; Recarrega os bytes superior e inf
+                             erior.
+0040 758AAF           43                                     mov TL0, #0AFh          ; Move o byte inferior.
+0043 D804             44                                     djnz R0, return         ; Retorna da interrupção neste pont
+                             o se R0 > 0.
+0045 B280             45                                     cpl LED                         ; Complementa o valor do LE
+A51 MACRO ASSEMBLER  EXEMPLO_BLINK                                                        07/22/2023 17:41:16 PAGE     2
+
+                             D.
+0047 7814             46                                     mov R0, #20                     ; Recarrega o R0.
+0049 32               47     return:                 reti                            ; Retorna da interrupção.
+                      48                             
+004A 32               49     ISR_EX1:                reti                            ; Retorna da interrupção.
+                      50     
+004B 32               51     ISR_TIMER1:             reti                            ; Retorna da interrupção.
+                      52                             
+004C 32               53     ISR_SERIAL:             reti                            ; Retorna da interrupção.
+                      54                
+                      55     end
+A51 MACRO ASSEMBLER  EXEMPLO_BLINK                                                        07/22/2023 17:41:16 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INIT . . . . . . .  C ADDR   0026H   A   
+ISR_EX0. . . . . .  C ADDR   003AH   A   
+ISR_EX1. . . . . .  C ADDR   004AH   A   
+ISR_SERIAL . . . .  C ADDR   004CH   A   
+ISR_TIMER0 . . . .  C ADDR   003BH   A   
+ISR_TIMER1 . . . .  C ADDR   004BH   A   
+LED. . . . . . . .  B ADDR   0080H.0 A   
+LOOP . . . . . . .  C ADDR   0038H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+RETURN . . . . . .  C ADDR   0049H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

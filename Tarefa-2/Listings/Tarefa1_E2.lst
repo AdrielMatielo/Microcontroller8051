@@ -1,0 +1,128 @@
+A51 MACRO ASSEMBLER  TAREFA1_E2                                                           07/19/2023 22:56:26 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Tarefa1_E2.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE Tarefa1_E2.asm SET(SMALL) DEBUG PRINT(.\Listings\Tarefa1_
+                      E2.lst) OBJECT(.\Objects\Tarefa1_E2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; Exemplo de solução para a Parte I da Tarefa 1.
+                       2     
+                       3                                     $mod51 
+                       4                                             
+  0090                 5                                     GO_DN equ P1.0                  ; Definição dos botões.
+  0097                 6                                     GO_UP equ P1.7
+                       7     
+0000                   8                                     org 0000h       ; RESET 
+0000 02002F            9                                             ljmp INIT                       ; Pula para o iníci
+                             o do programa.
+                      10     
+0003                  11                                     org 0003h       ; /INT0
+0003 020056           12                                             ljmp ISR_EX0
+                      13                                             
+000B                  14                                     org 000Bh       ; TIMER0
+000B 02005B           15                                             ljmp ISR_TIMER0
+                      16     
+0013                  17                                     org 0013h       ; /INT1
+0013 02005C           18                                             ljmp ISR_EX1
+                      19                                             
+001B                  20                                     org 001Bh       ; TIMER1
+001B 020061           21                                             ljmp ISR_TIMER1
+                      22                                             
+0023                  23                                     org 0023h       ; SERIAL
+0023 020062           24                                             ljmp ISR_SERIAL
+                      25                                     
+  0000                26                                     FLAG equ 0
+                      27                                             
+0026 75A885           28                                     mov IE, #10000101b
+0029 C2AF             29                                     clr EA
+002B D288             30                                     setb IT0
+002D D28A             31                                     setb IT1
+                      32                                     
+002F 74FE             33     INIT:                   mov A, #254
+0031 8000             34                                     sjmp DOWN_UP                    ; Pula para um laço de desl
+                             ocamento arbitrário.
+                      35                                             
+0033 300008           36     DOWN_UP:                jnb FLAG, UP_DOWN
+0036 23               37                                     rl A                                    ; Rotaciona o acumu
+                             lador para a esquerda e
+0037 F580             38                                     mov P0, A                               ; atrubui ele à por
+                             ta P0.
+0039 120049           39                                     lcall DELAY_500MS               ; Espera 500 ms.
+003C 80F5             40                                     sjmp DOWN_UP                    ; Continua no laço se o sen
+                             tido de rotação não foi alterado.
+                      41                                     
+003E 2000F2           42     UP_DOWN:                jb FLAG, DOWN_UP
+0041 03               43                                     rr A                                    ; Rotaciona o acumu
+                             lador para a direita e
+0042 F580             44                                     mov P0, A                               ; atrubui ele à por
+                             ta P0.
+0044 120049           45                                     lcall DELAY_500MS               ; Espera 500 ms.
+0047 80F5             46                                     sjmp UP_DOWN                    ; Continua no laço se o sen
+                             tido de rotação não foi alterado.
+                      47     
+0049 7A05             48     DELAY_500MS:    mov R2, #5                              ; Rotina de atraso de A x 100 ms (c
+                             om A = 5).
+A51 MACRO ASSEMBLER  TAREFA1_E2                                                           07/19/2023 22:56:26 PAGE     2
+
+004B 79FF             49     LOOP1:                  mov R1, #255
+004D 78FF             50     LOOP2:                  mov R0, #255
+004F D8FE             51     LOOP3:                  djnz R0, LOOP3
+0051 D9FA             52                                     djnz R1, LOOP2
+0053 DAF6             53                                     djnz R2, LOOP1
+0055 22               54                                     ret
+                      55     
+0056 C200             56     ISR_EX0:                clr FLAG
+0058 D2AF             57                                     setb EA
+005A 32               58                                     reti                                    ; Retorna da interr
+                             upção.
+                      59                             
+005B 32               60     ISR_TIMER0:             reti                                    ; Retorna da interrupção.
+                      61                             
+005C D200             62     ISR_EX1:                setb FLAG
+005E D2AF             63                                     setb EA
+0060 32               64                                     reti                                    ; Retorna da interr
+                             upção.
+                      65     
+0061 32               66     ISR_TIMER1:             reti                                    ; Retorna da interrupção.
+                      67                             
+0062 32               68     ISR_SERIAL:             reti                                    ; Retorna da interrupção.
+                      69                
+                      70     end
+A51 MACRO ASSEMBLER  TAREFA1_E2                                                           07/19/2023 22:56:26 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY_500MS. . . .  C ADDR   0049H   A   
+DOWN_UP. . . . . .  C ADDR   0033H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+FLAG . . . . . . .  N NUMB   0000H   A   
+GO_DN. . . . . . .  B ADDR   0090H.0 A   
+GO_UP. . . . . . .  B ADDR   0090H.7 A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INIT . . . . . . .  C ADDR   002FH   A   
+ISR_EX0. . . . . .  C ADDR   0056H   A   
+ISR_EX1. . . . . .  C ADDR   005CH   A   
+ISR_SERIAL . . . .  C ADDR   0062H   A   
+ISR_TIMER0 . . . .  C ADDR   005BH   A   
+ISR_TIMER1 . . . .  C ADDR   0061H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LOOP1. . . . . . .  C ADDR   004BH   A   
+LOOP2. . . . . . .  C ADDR   004DH   A   
+LOOP3. . . . . . .  C ADDR   004FH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+UP_DOWN. . . . . .  C ADDR   003EH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

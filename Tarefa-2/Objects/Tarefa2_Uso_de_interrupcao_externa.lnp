@@ -1,0 +1,3 @@
+".\Objects\Tarefa1_E2.obj" 
+TO ".\Objects\Tarefa2_Uso_de_interrupcao_externa" 
+PRINT(".\Listings\Tarefa2_Uso_de_interrupcao_externa.m51") RAMSIZE(256) 
