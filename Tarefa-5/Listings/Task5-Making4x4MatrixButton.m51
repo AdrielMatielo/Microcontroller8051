@@ -1,0 +1,99 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    07/31/2023  23:20:55  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\PROGRAM FILES\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Task5-Making4x4MatrixButton.obj TO .\Objects\Task5-Making4x4MatrixBu
+>> tton PRINT (.\Listings\Task5-Making4x4MatrixButton.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Task5-Making4x4MatrixButton.obj (TASK5_MAKING4X4MATRIXBUTTON)
+
+
+LINK MAP OF MODULE:  .\Objects\Task5-Making4x4MatrixButton (TASK5_MAKING4X4MATRIXBUTTON)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     006EH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Task5-Making4x4MatrixButton (TASK5_MAKING4X4MATRIXBUTTON)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TASK5_MAKING4X4MATRIXBUTTON
+  D:00B0H         SYMBOL        ACT_DISPLAY
+  C:0053H         SYMBOL        CONTINUE
+  C:0030H         SYMBOL        DATE
+  D:0080H         SYMBOL        DISPLAY
+  C:0038H         SYMBOL        INIT
+  C:0056H         SYMBOL        ISR_EX0
+  C:006BH         SYMBOL        ISR_EX1
+  C:006DH         SYMBOL        ISR_SERIAL
+  C:006AH         SYMBOL        ISR_TIMER0
+  C:006CH         SYMBOL        ISR_TIMER1
+  C:0040H         SYMBOL        LOOP
+  C:0026H         SYMBOL        NUMBERS
+  D:0080H         SYMBOL        P0
+  D:00B0H         SYMBOL        P3
+  B:0088H.5       SYMBOL        TF0
+  D:008CH         SYMBOL        TH0
+  C:0057H         SYMBOL        TIMER5MS
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         21
+  C:0003H         LINE#         24
+  C:000BH         LINE#         27
+  C:0013H         LINE#         30
+  C:001BH         LINE#         33
+  C:0023H         LINE#         36
+  C:0038H         LINE#         47
+  C:003AH         LINE#         48
+  C:003BH         LINE#         49
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/31/2023  23:20:55  PAGE 2
+
+
+  C:003DH         LINE#         50
+  C:0040H         LINE#         52
+  C:0041H         LINE#         53
+  C:0042H         LINE#         54
+  C:0044H         LINE#         56
+  C:0045H         LINE#         57
+  C:0047H         LINE#         58
+  C:004AH         LINE#         59
+  C:004BH         LINE#         60
+  C:004CH         LINE#         62
+  C:004FH         LINE#         63
+  C:0051H         LINE#         64
+  C:0053H         LINE#         66
+  C:0054H         LINE#         67
+  C:0056H         LINE#         69
+  C:0057H         LINE#         71
+  C:005AH         LINE#         72
+  C:005DH         LINE#         73
+  C:0060H         LINE#         74
+  C:0062H         LINE#         75
+  C:0065H         LINE#         76
+  C:0067H         LINE#         77
+  C:0069H         LINE#         78
+  C:006AH         LINE#         80
+  C:006BH         LINE#         82
+  C:006CH         LINE#         84
+  C:006DH         LINE#         86
+  -------         ENDMOD        TASK5_MAKING4X4MATRIXBUTTON
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 005AH BYTE ( 4%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=110
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

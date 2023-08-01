@@ -1,0 +1,156 @@
+A51 MACRO ASSEMBLER  TASK5_MAKING4X4MATRIXBUTTON                                          07/31/2023 23:20:54 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Task5-Making4x4MatrixButton.obj
+ASSEMBLER INVOKED BY: C:\Program Files\Keil_v5\C51\BIN\A51.EXE Task5-Making4x4MatrixButton.asm SET(SMALL) DEBUG PRINT(.\
+                      Listings\Task5-Making4x4MatrixButton.lst) OBJECT(.\Objects\Task5-Making4x4MatrixButton.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; ======================================= Universidade Federal de Pelotas
+                       2     ; ======================================= Centro de Desenvolvimento Tecnológico
+                       3     ; ======================================= Bacharelado em Engenharia de Computação
+                       4     ; ======================================= Disciplina: 22000279 --- Microcontroladores
+                       5     ; ======================================= Turma: 2023/1 --- M1
+                       6     ; ======================================= Professor: Alan Rossetto
+                       7     ;
+                       8     ;                                                                                 Descriç�
+                             �o: Tarefa 4 
+                       9     ;
+                      10     ;                                                                                 Identific
+                             ação:
+                      11     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula: Ari Vitor da Silva Lazzarotto, 17200917
+                      12     ;                                                                                 Nome da(o
+                             ) aluna(o) & Matrícula: Adriel Correa Matielo, 16105321
+                      13     ;                                                                                 Data: 29/
+                             07/2023                      
+                      14     
+                      15                                     $mod51 
+                      16                                             
+  0080                17                                     DISPLAY EQU P0
+  00B0                18                                     ACT_DISPLAY EQU P3
+                      19     
+0000                  20                                     org 0000h       ; RESET 
+0000 020038           21                                             ljmp INIT
+                      22     
+0003                  23                                     org 0003h       ; /INT0
+0003 020056           24                                             ljmp ISR_EX0
+                      25                                             
+000B                  26                                     org 000Bh       ; TIMER0
+000B 02006A           27                                             ljmp ISR_TIMER0
+                      28     
+0013                  29                                     org 0013h       ; /INT1
+0013 02006B           30                                             ljmp ISR_EX1
+                      31                                             
+001B                  32                                     org 001Bh       ; TIMER1
+001B 02006C           33                                             ljmp ISR_TIMER1
+                      34                                             
+0023                  35                                     org 0023h       ; SERIAL
+0023 02006D           36                                             ljmp ISR_SERIAL
+                      37                                             
+                      38     ; Creates a list with all the numbers to be displayed using the DB directive
+                      39     
+                      40     ; Equ 7seg:             0----1----2----3----4----5----6----7----8----9-                    
+                                  
+0026 039F250D         41     NUMBERS:                db 003, 159, 037, 013, 153, 073, 065, 031, 001, 009
+002A 9949411F                
+002E 0109                    
+                      42             
+                      43     ; Equ 7seg:             2----9----0----7----2----0----2----3
+0030 2509031F         44     DATE:                   db 037, 009, 003, 031, 037, 003, 037, 013
+0034 2503250D                
+                      45     
+                      46     
+0038 747F             47     INIT:                   mov A,  #0111$1111b             ; Set the first digit to appear
+003A F9               48                                     mov R1, A                               ; Saves the accumul
+A51 MACRO ASSEMBLER  TASK5_MAKING4X4MATRIXBUTTON                                          07/31/2023 23:20:54 PAGE     2
+
+                             ator(The first digit to appear) on R1
+003B 7B00             49                                     mov R3, #0                              ; Initializes the l
+                             ist iterator on R3
+003D 900030           50                                     mov DPTR, #DATE             ; Load the list into data point
+                             er.  
+                      51                                     
+0040 EB               52     LOOP:                   mov A, R3                               ; Loads the iterator into t
+                             he accumulator
+0041 93               53                                     movc A, @A+DPTR                 ; Moves the number correspo
+                             nding to the position pointed by the iterator to the accumulator
+0042 F580             54                                     mov DISPLAY, A                  ; Put accumulator in P0(Dis
+                             play the number)
+                      55                                     
+0044 E9               56                                     mov A, R1                               ; Load the old accu
+                             mulator(activated display number) into accumulator
+0045 F5B0             57                                     mov ACT_DISPLAY, A              ; Put the accumulator in P3
+                             (The activated display for this turn)
+0047 120057           58                                     lcall TIMER5MS                  ; Timer for see the activat
+                             ed display
+004A 03               59                                     RR A                                    ; Rotate the accumu
+                             lator
+004B F9               60                                     mov R1, A                               ; Saves the accumul
+                             ator on R1 again(The activated display for the next turn)
+                      61                                     
+004C BB0704           62                                     cjne R3, #7, CONTINUE   ; If the list has not reached the e
+                             nd(number 7), jump
+004F 7B00             63                                     mov R3, #0                              ; Else recharge the
+                              iterator
+0051 80ED             64                                     sjmp LOOP                               
+                      65                                     
+0053 0B               66     CONTINUE:               inc R3                                  ; Increment the iterator
+0054 80EA             67                                     sjmp LOOP                               
+                      68                                     
+0056 32               69     ISR_EX0:                reti
+                      70     
+0057 758901           71     TIMER5MS:               MOV  TMOD, #01h
+005A 758CF2           72                                     MOV  TH0,  #0F2h
+005D 758A00           73                                     MOV  TL0,  #000h
+0060 D28C             74                                     SETB TR0
+0062 308DFD           75                                     JNB  TF0, $
+0065 C28C             76                                     CLR  TR0
+0067 C28D             77                                     CLR  TF0
+0069 32               78                                     reti                            
+                      79             
+006A 32               80     ISR_TIMER0:             reti
+                      81                             
+006B 32               82     ISR_EX1:                reti
+                      83     
+006C 32               84     ISR_TIMER1:             reti
+                      85                             
+006D 32               86     ISR_SERIAL:             reti
+                      87                
+                      88     end
+A51 MACRO ASSEMBLER  TASK5_MAKING4X4MATRIXBUTTON                                          07/31/2023 23:20:54 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACT_DISPLAY. . . .  D ADDR   00B0H   A   
+CONTINUE . . . . .  C ADDR   0053H   A   
+DATE . . . . . . .  C ADDR   0030H   A   
+DISPLAY. . . . . .  D ADDR   0080H   A   
+INIT . . . . . . .  C ADDR   0038H   A   
+ISR_EX0. . . . . .  C ADDR   0056H   A   
+ISR_EX1. . . . . .  C ADDR   006BH   A   
+ISR_SERIAL . . . .  C ADDR   006DH   A   
+ISR_TIMER0 . . . .  C ADDR   006AH   A   
+ISR_TIMER1 . . . .  C ADDR   006CH   A   
+LOOP . . . . . . .  C ADDR   0040H   A   
+NUMBERS. . . . . .  C ADDR   0026H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER5MS . . . . .  C ADDR   0057H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
