@@ -1,0 +1,7 @@
+*.PWI
+*.SDF
+*.uvgui.adrie
+*.uvopt
+*.uvproj
+Listings/
+Objects/
