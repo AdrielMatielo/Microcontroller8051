@@ -39,29 +39,32 @@
 ;===============================================					
 INIT:					
 				mov P2, #0x0
-				clr P3.7
-				mov DPTR, #DAY
-				mov R6, #0
+				clr P3.7						; Actvate display P3.7
+				mov R6, #0						; For list position 0
+				mov IE, #1000$0010b				; Interruption Register: (1)Enable-(X)-(X)-(0)E/S-$-(0)Timer1-(0)Ex1-(1)Timer0-(0)Ex0
+				mov TMOD, #0000$0001b			; Timer/Counter Register: T1 (0)TR1-(0)Timer-(01)Mode01 -$- T2 (0)TR2-(0)Timer-(01)Mode01
+				
+				;Timer for 5ms @ 8MHz => 5ms/(8MHz^-1/12) - 65536 = 8*0xCA60
+				mov TH0, #0CAh
+				mov TL0, #060h
+				mov R1, #8
+				setb TR0						; Start timer
+				setb TF0
 							
 ;============== || ============ || ==============
 ;============== | PRINCIPAL LOOP | ==============
 ;============== || =============|| ==============
-LOOP:			acall SHOWDISPLAY	
-				acall MULTIPLEX
-				
+LOOP:									
+				acall SHOWDISPLAY				; Set number to show on display
+				jnb TF0, $						; Wait timer
+				acall MULTIPLEX					; Multiplexer display
 				sjmp LOOP
 
 ;=================== ROUTINES ===================
-DELAY_500MS:	mov R2, #1		; Rotina de atraso de A x 100 ms (com A = 5).
-LOOP1:			mov R1, #255
-LOOP2:			mov R0, #255
-LOOP3:			djnz R0, LOOP3
-				djnz R1, LOOP2
-				djnz R2, LOOP1
-				ret
 
-MULTIPLEX:		mov A, P3
-				rr A
+MULTIPLEX:		mov P0, #0xFF					; Clean display
+				mov A, P3
+				rr A							; Move 1bit to right to set next display
 				mov P3, A
 				ret
 
@@ -69,16 +72,15 @@ SHOWDISPLAY:	mov DPTR, #DAY
 				mov A, R6
 				movc A, @A+DPTR
 				mov P0, A
-				acall DELAY_500MS
 				cjne R6, #7, CONTINUE
-				mov R6, 0
+				mov R6, 0						; End of list
 				ret
 				
 CONTINUE:		inc R6
 				ret
 
-;Display7 0=#03h 1=#9fh 2=#25h 3=#0Dh 4=#99h 5=#49h 6=#C1h 7=#1Fh 8=#01h 9=#19h
-DAY:		db 0x03, 0x49, 0x03, 0x01, 0x25, 0x03, 0x25, 0x0D
+;Display7 0=0x03 1=0x9F 2=0x25 3=0x0D 4=0x99 5=0x49 6=0xC1 7=0x1F 8=0x01 9=0x19
+DAY:		db 0x25, 0x19, 0x03, 0x1F, 0x25, 0x03, 0x25, 0x0D
 
 ;================= INTERRUPTIONS ================
 
@@ -86,9 +88,12 @@ ISR_EX0:		reti
 
 TIMER5MS:  		reti				
 	
-ISR_TIMER0:		mov TH0, #0F2h
-				mov TL0, #0FAh
-				reti
+ISR_TIMER0:		clr TF0
+				mov TH0, #0CAh
+				mov TL0, #060h
+				djnz R1, RETURN_TIMER0
+				mov R1, #8
+RETURN_TIMER0:	reti
 			
 ISR_EX1:		reti
 
