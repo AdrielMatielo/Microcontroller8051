@@ -1,3 +1,0 @@
-".\Objects\Exemplo-Blink.obj" 
-TO ".\Objects\Exemplo-Blink" 
-PRINT(".\Listings\Exemplo-Blink.m51") RAMSIZE(256) 
