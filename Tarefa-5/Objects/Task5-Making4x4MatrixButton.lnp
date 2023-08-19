@@ -1,3 +1,0 @@
-".\Objects\Task5-Making4x4MatrixButton.obj" 
-TO ".\Objects\Task5-Making4x4MatrixButton" 
-PRINT(".\Listings\Task5-Making4x4MatrixButton.m51") RAMSIZE(256) 

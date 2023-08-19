@@ -1,3 +1,0 @@
-".\Objects\Task-4-activation_of_peripherals_with_timer_and_multiplexing.obj" 
-TO ".\Objects\Task-4-activation_of_peripherals_with_timer_and_multiplexing" 
-PRINT(".\Listings\Task-4-activation_of_peripherals_with_timer_and_multiplexing.m51") RAMSIZE(256) 

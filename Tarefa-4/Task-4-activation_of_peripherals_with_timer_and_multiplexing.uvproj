@@ -377,9 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>Task-4-activation_of_peripherals_with_timer_and_multiplexing.asm</FileName>
+              <FileName>Task-4-Multiplexing.asm</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Task-4-activation_of_peripherals_with_timer_and_multiplexing.asm</FilePath>
+              <FilePath>.\Task-4-Multiplexing.asm</FilePath>
             </File>
           </Files>
         </Group>

@@ -3,5 +3,6 @@
 *.uvgui.adrie
 *.uvopt
 *.uvproj
+*.DBK
 Listings/
 Objects/

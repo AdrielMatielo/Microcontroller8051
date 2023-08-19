@@ -377,9 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>Task5-Making4x4MatrixButton.asm</FileName>
+              <FileName>Task5-Scanning.asm</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Task5-Making4x4MatrixButton.asm</FilePath>
+              <FilePath>.\Task5-Scanning.asm</FilePath>
             </File>
           </Files>
         </Group>
